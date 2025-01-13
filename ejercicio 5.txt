@@ -1,0 +1,61 @@
+using System;
+
+namespace ContadorVocales
+{
+    public class Contador
+    {
+        public string Palabra { get; set; }
+
+        public Contador(string palabra)
+        {
+            Palabra = palabra;
+        }
+
+        public void ContarVocales()
+        {
+            int[] vocalesCount = new int[5]; // Para contar las vocales: a, e, i, o, u
+
+            foreach (char letra in Palabra.ToLower())
+            {
+                switch (letra)
+                {
+                    case 'a':
+                        vocalesCount[0]++;
+                        break;
+                    case 'e':
+                        vocalesCount[1]++;
+                        break;
+                    case 'i':
+                        vocalesCount[2]++;
+                        break;
+                    case 'o':
+                        vocalesCount[3]++;
+                        break;
+                    case 'u':
+                        vocalesCount[4]++;
+                        break;
+                }
+            }
+
+            // Mostrar resultados
+            Console.WriteLine($"La palabra '{Palabra}' contiene:");
+            Console.WriteLine($"A: {vocalesCount[0]} veces");
+            Console.WriteLine($"E: {vocalesCount[1]} veces");
+            Console.WriteLine($"I: {vocalesCount[2]} veces");
+            Console.WriteLine($"O: {vocalesCount[3]} veces");
+            Console.WriteLine($"U: {vocalesCount[4]} veces");
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("Introduce una palabra: ");
+            string palabra = Console.ReadLine();
+
+            Contador contador = new Contador(palabra);
+            contador.ContarVocales();
+        }
+    }
+}

@@ -1,0 +1,44 @@
+using System;
+using System.Collections.Generic;
+
+public class Loteria
+{
+    private List<int> numerosGanadores;
+
+    public Loteria()
+    {
+        numerosGanadores = new List<int>();
+    }
+
+    public void ObtenerNumerosGanadores()
+    {
+        Console.WriteLine("Introduce los 6 números ganadores de la lotería primitiva:");
+
+        for (int i = 0; i < 6; i++)
+        {
+            Console.Write($"Número {i + 1}: ");
+            int numero = int.Parse(Console.ReadLine());
+            numerosGanadores.Add(numero);
+        }
+    }
+
+    public void MostrarNumerosOrdenados()
+    {
+        numerosGanadores.Sort(); // Ordena los números de menor a mayor
+        Console.WriteLine("Los números ganadores ordenados son:");
+        foreach (var numero in numerosGanadores)
+        {
+            Console.WriteLine(numero);
+        }
+    }
+}
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        Loteria loteria = new Loteria();
+        loteria.ObtenerNumerosGanadores();
+        loteria.MostrarNumerosOrdenados();
+    }
+}

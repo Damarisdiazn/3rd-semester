@@ -1,0 +1,46 @@
+using System;
+
+namespace PalindromoApp
+{
+    // Clase que representa la lógica para verificar si una palabra es palíndromo
+    public class Palindromo
+    {
+        // Método para verificar si una palabra es palíndromo
+        public bool EsPalindromo(string palabra)
+        {
+            // Convertir la palabra a minúsculas para evitar problemas con mayúsculas/minúsculas
+            palabra = palabra.ToLower();
+
+            // Invertir la palabra
+            char[] arrayPalabra = palabra.ToCharArray();
+            Array.Reverse(arrayPalabra);
+            string palabraInvertida = new string(arrayPalabra);
+
+            // Comparar la palabra original con la invertida
+            return palabra == palabraInvertida;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Crear una instancia de la clase Palindromo
+            Palindromo palindromo = new Palindromo();
+
+            // Solicitar al usuario que ingrese una palabra
+            Console.Write("Introduce una palabra: ");
+            string palabraUsuario = Console.ReadLine();
+
+            // Verificar si la palabra es un palíndromo
+            if (palindromo.EsPalindromo(palabraUsuario))
+            {
+                Console.WriteLine("¡La palabra es un palíndromo!");
+            }
+            else
+            {
+                Console.WriteLine("La palabra NO es un palíndromo.");
+            }
+        }
+    }
+}
