@@ -1,0 +1,119 @@
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Hello, World!");
+    }
+}
+using System;
+
+class Nodo
+{
+    public int Valor;
+    public Nodo Siguiente;
+
+    public Nodo(int valor)
+    {
+        Valor = valor;
+        Siguiente = null;
+    }
+}
+
+class ListaEnlazada
+{
+    public Nodo Cabeza;
+
+    public ListaEnlazada()
+    {
+        Cabeza = null;
+    }
+
+    // Función para agregar un elemento al final de la lista
+    public void Agregar(int valor)
+    {
+        Nodo nuevoNodo = new Nodo(valor);
+        if (Cabeza == null)
+        {
+            Cabeza = nuevoNodo;
+        }
+        else
+        {
+            Nodo actual = Cabeza;
+            while (actual.Siguiente != null)
+            {
+                actual = actual.Siguiente;
+            }
+            actual.Siguiente = nuevoNodo;
+        }
+    }
+
+    // Función para imprimir los elementos de la lista
+    public void Imprimir()
+    {
+        Nodo actual = Cabeza;
+        while (actual != null)
+        {
+            Console.Write(actual.Valor + " ");
+            actual = actual.Siguiente;
+        }
+        Console.WriteLine();
+    }
+
+    // Función para eliminar nodos fuera de un rango
+    public void EliminarFueraDeRango(int min, int max)
+    {
+        while (Cabeza != null && (Cabeza.Valor < min || Cabeza.Valor > max))
+        {
+            Cabeza = Cabeza.Siguiente; // Elimina el nodo cabeza
+        }
+
+        Nodo actual = Cabeza;
+
+        while (actual != null && actual.Siguiente != null)
+        {
+            if (actual.Siguiente.Valor < min || actual.Siguiente.Valor > max)
+            {
+                actual.Siguiente = actual.Siguiente.Siguiente; // Elimina el nodo siguiente
+            }
+            else
+            {
+                actual = actual.Siguiente;
+            }
+        }
+    }
+}
+
+class Program
+{
+    static Random random = new Random();
+
+    static void Main()
+    {
+        ListaEnlazada lista = new ListaEnlazada();
+
+        // Crear la lista con 50 números aleatorios entre 1 y 999
+        for (int i = 0; i < 50; i++)
+        {
+            lista.Agregar(random.Next(1, 1000)); // Número aleatorio entre 1 y 999
+        }
+
+        Console.WriteLine("Lista original:");
+        lista.Imprimir();
+
+        // Leer el rango de valores desde el teclado
+        Console.WriteLine("Ingrese el valor mínimo del rango:");
+        int min = int.Parse(Console.ReadLine());
+
+        Console.WriteLine("Ingrese el valor máximo del rango:");
+        int max = int.Parse(Console.ReadLine());
+
+        // Eliminar los nodos fuera del rango
+        lista.EliminarFueraDeRango(min, max);
+
+        // Imprimir la lista después de eliminar los nodos fuera del rango
+        Console.WriteLine($"Lista después de eliminar los nodos fuera del rango [{min}, {max}]:");
+        lista.Imprimir();
+    }
+}
