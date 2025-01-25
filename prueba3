@@ -1,0 +1,30 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        int n = 3; // Número de discos
+        Console.WriteLine("Movimientos para resolver las Torres de Hanoi:");
+        SolveHanoi(n, 'A', 'C', 'B'); // A: origen, C: destino, B: auxiliar
+    }
+
+    /// <summary>
+    /// Resuelve el problema de las Torres de Hanoi.
+    /// </summary>
+    /// <param name="n">Número de discos.</param>
+    /// <param name="fromRod">La varilla de origen.</param>
+    /// <param name="toRod">La varilla de destino.</param>
+    /// <param name="auxRod">La varilla auxiliar.</param>
+    static void SolveHanoi(int n, char fromRod, char toRod, char auxRod)
+    {
+        if (n == 1)
+        {
+            Console.WriteLine($"Mover disco 1 de {fromRod} a {toRod}");
+            return;
+        }
+        SolveHanoi(n - 1, fromRod, auxRod, toRod);
+        Console.WriteLine($"Mover disco {n} de {fromRod} a {toRod}");
+        SolveHanoi(n - 1, auxRod, toRod, fromRod);
+    }
+}
