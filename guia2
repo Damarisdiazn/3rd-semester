@@ -1,0 +1,83 @@
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Auditoria auditorio = new Auditoria(100);
+        
+        // Simulando el registro de asistentes
+        auditorio.RegistrarAsistente("Juan", 1);
+        auditorio.RegistrarAsistente("Maria", 2);
+        auditorio.RegistrarAsistente("Carlos", 1);
+        auditorio.RegistrarAsistente("Ana", 2);
+        
+        // Visualizar asistentes
+        var asistentes = auditorio.VisualizarAsistentes();
+        Console.WriteLine("Asistentes registrados:");
+        foreach(var asistente in asistentes)
+        {
+            Console.WriteLine(asistente);
+        }
+    }
+}
+
+class Auditoria
+{
+    private bool[] asientos;
+    private Queue<string> cola1;
+    private Queue<string> cola2;
+    private List<string> asistentes;
+
+    public Auditoria(int totalAsientos)
+    {
+        asientos = new bool[totalAsientos]; // False significa asiento disponible
+        cola1 = new Queue<string>();
+        cola2 = new Queue<string>();
+        asistentes = new List<string>();
+    }
+
+    public void RegistrarAsistente(string nombre, int colaId)
+    {
+        if (colaId == 1)
+        {
+            cola1.Enqueue(nombre);
+        }
+        else
+        {
+            cola2.Enqueue(nombre);
+        }
+        asistentes.Add(nombre);
+        AsignarAsiento();
+    }
+
+    private void AsignarAsiento()
+    {
+        while (cola1.Count > 0 || cola2.Count > 0)
+        {
+            for (int i = 1; i <= 2; i++)
+            {
+                Queue<string> cola = (i == 1) ? cola1 : cola2;
+                if (cola.Count > 0)
+                {
+                    string nombre = cola.Dequeue();
+                    for (int j = 0; j < asientos.Length; j++)
+                    {
+                        if (!asientos[j]) // Asiento disponible
+                        {
+                            asientos[j] = true; // Marcar asiento como ocupado
+                            Console.WriteLine($"Asiento asignado a {nombre}: {j + 1}");
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public List<string> VisualizarAsistentes()
+    {
+        return asistentes;
+    }
+}
