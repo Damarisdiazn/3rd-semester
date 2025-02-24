@@ -1,0 +1,81 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+static void Main()
+{
+// Listas de nombres y apellidos para generar ciudadanos aleatorios.
+string[] nombres = { "Juan", "Maria", "Pedro", "Ana", "Luis", "Carmen", "Carlos", "Laura", "Javier", "Lucía" };
+string[] apellidos = { "García", "Martínez", "López", "Hernández", "González", "Pérez", "Sánchez", "Romero", "Cruz", "Torres" };
+
+// Crear conjunto ficticio de 500 ciudadanos con nombres y apellidos aleatorios
+HashSet<string> ciudadanos = new HashSet<string>();
+Random rand = new Random();
+
+while (ciudadanos.Count < 500)
+{
+string nombre = nombres[rand.Next(nombres.Length)];
+string apellido = apellidos[rand.Next(apellidos.Length)];
+ciudadanos.Add($"{nombre} {apellido}");
+}
+
+// Crear conjuntos de ciudadanos vacunados con Pfizer y AstraZeneca
+HashSet<string> vacunadosPfizer = new HashSet<string>();
+HashSet<string> vacunadosAstrazeneca = new HashSet<string>();
+
+// Selección aleatoria de 75 ciudadanos para vacunación con Pfizer
+while (vacunadosPfizer.Count < 75)
+{
+int index = rand.Next(ciudadanos.Count);
+string ciudadano = ciudadanos.ElementAt(index);
+vacunadosPfizer.Add(ciudadano);
+}
+
+// Selección aleatoria de 75 ciudadanos para vacunación con AstraZeneca
+while (vacunadosAstrazeneca.Count < 75)
+{
+int index = rand.Next(ciudadanos.Count);
+string ciudadano = ciudadanos.ElementAt(index);
+vacunadosAstrazeneca.Add(ciudadano);
+}
+
+// Listado de ciudadanos que no se han vacunado
+HashSet<string> noVacunados = ciudadanos.Except(vacunadosPfizer.Union(vacunadosAstrazeneca)).ToHashSet();
+
+// Listado de ciudadanos que han recibido ambas vacunas (no aplicable en este caso, ya que no se permite la duplicación)
+HashSet<string> vacunadosDos = vacunadosPfizer.Intersect(vacunadosAstrazeneca).ToHashSet();
+
+// Listado de ciudadanos que solamente han recibido la vacuna de Pfizer
+HashSet<string> soloPfizer = vacunadosPfizer.Except(vacunadosAstrazeneca).ToHashSet();
+
+// Listado de ciudadanos que solamente han recibido la vacuna de AstraZeneca
+HashSet<string> soloAstrazeneca = vacunadosAstrazeneca.Except(vacunadosPfizer).ToHashSet();
+
+// Imprimir resultados
+Console.WriteLine("Ciudadanos no vacunados:");
+foreach (var ciudadano in noVacunados)
+{
+Console.WriteLine(ciudadano);
+}
+
+Console.WriteLine("\nCiudadanos que han recibido ambas vacunas (no aplicable en este caso):");
+foreach (var ciudadano in vacunadosDos)
+{
+Console.WriteLine(ciudadano);
+}
+
+Console.WriteLine("\nCiudadanos que solo han recibido la vacuna de Pfizer:");
+foreach (var ciudadano in soloPfizer)
+{
+Console.WriteLine(ciudadano);
+}
+
+Console.WriteLine("\nCiudadanos que solo han recibido la vacuna de AstraZeneca:");
+foreach (var ciudadano in soloAstrazeneca)
+{
+Console.WriteLine(ciudadano);
+}
+}
+}
