@@ -1,76 +1,70 @@
-#include <iostream>
-#include <vector>
-#include <string>
+using System;
+using System.Collections.Generic;
 
-using namespace std;
+namespace RegistroJugadores
+{
+// Estructura para almacenar datos de un jugador
+public struct Jugador
+{
+public string Nombre;
+public string Apellido;
+public int Edad;
+public string Posicion;
 
-// Estructura para almacenar información del jugador
-struct Jugador {
-string nombre;
-string apellido;
-int edad;
-string posicion;
-};
+public Jugador(string nombre, string apellido, int edad, string posicion)
+{
+Nombre = nombre;
+Apellido = apellido;
+Edad = edad;
+Posicion = posicion;
+}
+}
 
 // Estructura para almacenar información del equipo
-struct Equipo {
-string nombre;
-vector<Jugador> jugadores;
-};
+public class Equipo
+{
+public string Nombre;
+public List<Jugador> Jugadores;
 
-// Función para agregar un jugador a un equipo
-void agregarJugador(Equipo &equipo) {
-Jugador nuevoJugador;
-cout << "Ingrese el nombre del jugador: ";
-cin >> nuevoJugador.nombre;
-cout << "Ingrese el apellido del jugador: ";
-cin >> nuevoJugador.apellido;
-cout << "Ingrese la edad del jugador: ";
-cin >> nuevoJugador.edad;
-cout << "Ingrese la posición del jugador: ";
-cin >> nuevoJugador.posicion;
-
-equipo.jugadores.push_back(nuevoJugador);
-cout << "Jugador agregado exitosamente.\n";
+public Equipo(string nombre)
+{
+Nombre = nombre;
+Jugadores = new List<Jugador>();
 }
 
-// Función para mostrar información del equipo
-void mostrarEquipo(const Equipo &equipo) {
-cout << "Equipo: " << equipo.nombre << "\n";
-cout << "Jugadores:\n";
-for (const auto &jugador : equipo.jugadores) {
-cout << "Nombre: " << jugador.nombre << " " << jugador.apellido << ", Edad: " << jugador.edad << ", Posición: " << jugador.posicion << "\n";
-}
+// Método para agregar un jugador al equipo
+public void AgregarJugador(Jugador jugador)
+{
+Jugadores.Add(jugador);
 }
 
-int main() {
-Equipo equipo;
-cout << "Ingrese el nombre del equipo: ";
-cin >> equipo.nombre;
-
-int opcion;
-do {
-cout << "\nMENU:\n";
-cout << "1. Agregar jugador\n";
-cout << "2. Mostrar equipo\n";
-cout << "3. Salir\n";
-cout << "Elija una opción: ";
-cin >> opcion;
-
-switch (opcion) {
-case 1:
-agregarJugador(equipo);
-break;
-case 2:
-mostrarEquipo(equipo);
-break;
-case 3:
-cout << "Saliendo...\n";
-break;
-default:
-cout << "Opción no válida. Intente de nuevo.\n";
+// Método para mostrar información de todos los jugadores en el equipo
+public void MostrarEquipo()
+{
+Console.WriteLine($"Equipo: {Nombre}");
+foreach (var jugador in Jugadores)
+{
+Console.WriteLine($"Nombre: {jugador.Nombre} {jugador.Apellido}, Edad: {jugador.Edad}, Posición: {jugador.Posicion}");
 }
-} while (opcion != 3);
+}
+}
 
-return 0;
+class Program
+{
+static void Main(string[] args)
+{
+// Crear un nuevo equipo
+Equipo equipo = new Equipo("Los Campeones");
+
+// Agregar algunos jugadores al equipo
+equipo.AgregarJugador(new Jugador("Juan", "Pérez", 25, "Delantero"));
+equipo.AgregarJugador(new Jugador("María", "Gómez", 22, "Defensa"));
+equipo.AgregarJugador(new Jugador("Luis", "Rodríguez", 30, "Centrocampista"));
+
+// Mostrar información del equipo
+equipo.MostrarEquipo();
+
+Console.ReadLine();
+}
+}
 }
