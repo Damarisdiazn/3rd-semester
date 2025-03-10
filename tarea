@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+// Estructura para almacenar información del jugador
+struct Jugador {
+string nombre;
+string apellido;
+int edad;
+string posicion;
+};
+
+// Estructura para almacenar información del equipo
+struct Equipo {
+string nombre;
+vector<Jugador> jugadores;
+};
+
+// Función para agregar un jugador a un equipo
+void agregarJugador(Equipo &equipo) {
+Jugador nuevoJugador;
+cout << "Ingrese el nombre del jugador: ";
+cin >> nuevoJugador.nombre;
+cout << "Ingrese el apellido del jugador: ";
+cin >> nuevoJugador.apellido;
+cout << "Ingrese la edad del jugador: ";
+cin >> nuevoJugador.edad;
+cout << "Ingrese la posición del jugador: ";
+cin >> nuevoJugador.posicion;
+
+equipo.jugadores.push_back(nuevoJugador);
+cout << "Jugador agregado exitosamente.\n";
+}
+
+// Función para mostrar información del equipo
+void mostrarEquipo(const Equipo &equipo) {
+cout << "Equipo: " << equipo.nombre << "\n";
+cout << "Jugadores:\n";
+for (const auto &jugador : equipo.jugadores) {
+cout << "Nombre: " << jugador.nombre << " " << jugador.apellido << ", Edad: " << jugador.edad << ", Posición: " << jugador.posicion << "\n";
+}
+}
+
+int main() {
+Equipo equipo;
+cout << "Ingrese el nombre del equipo: ";
+cin >> equipo.nombre;
+
+int opcion;
+do {
+cout << "\nMENU:\n";
+cout << "1. Agregar jugador\n";
+cout << "2. Mostrar equipo\n";
+cout << "3. Salir\n";
+cout << "Elija una opción: ";
+cin >> opcion;
+
+switch (opcion) {
+case 1:
+agregarJugador(equipo);
+break;
+case 2:
+mostrarEquipo(equipo);
+break;
+case 3:
+cout << "Saliendo...\n";
+break;
+default:
+cout << "Opción no válida. Intente de nuevo.\n";
+}
+} while (opcion != 3);
+
+return 0;
+}
