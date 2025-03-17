@@ -1,0 +1,66 @@
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        List<string> catalogo = new List<string>
+        {
+            "National Geographic",
+            "Scientific American",
+            "Time",
+            "Forbes",
+            "The Economist",
+            "Nature",
+            "Popular Science",
+            "Reader's Digest",
+            "Smithsonian",
+            "Wired"
+        };
+
+        while (true)
+        {
+            Console.WriteLine("\nMenú:");
+            Console.WriteLine("1. Buscar un título");
+            Console.WriteLine("2. Salir");
+            Console.Write("Seleccione una opción: ");
+            string opcion = Console.ReadLine();
+
+            if (opcion == "2")
+            {
+                break;
+            }
+            else if (opcion == "1")
+            {
+                Console.Write("Ingrese el título a buscar: ");
+                string titulo = Console.ReadLine();
+                
+                if (BusquedaIterativa(catalogo, titulo))
+                {
+                    Console.WriteLine("Título encontrado.");
+                }
+                else
+                {
+                    Console.WriteLine("Título no encontrado.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Opción no válida.");
+            }
+        }
+    }
+
+    static bool BusquedaIterativa(List<string> catalogo, string titulo)
+    {
+        foreach (string revista in catalogo)
+        {
+            if (revista.Equals(titulo, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+}
