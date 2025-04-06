@@ -1,0 +1,139 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Vuelo
+{
+    public string Origen { get; set; }
+    public string Destino { get; set; }
+    public int Costo { get; set; }
+
+    public Vuelo(string origen, string destino, int costo)
+    {
+        Origen = origen;
+        Destino = destino;
+        Costo = costo;
+    }
+}
+
+class Programa
+{
+    static Dictionary<string, List<Tuple<string, int>>> grafo = new Dictionary<string, List<Tuple<string, int>>>();
+
+    static void Main()
+    {
+        List<Vuelo> vuelos = new List<Vuelo>
+        {
+            new Vuelo("Quito", "Guayaquil", 80),
+            new Vuelo("Quito", "Cuenca", 60),
+            new Vuelo("Cuenca", "Guayaquil", 40),
+            new Vuelo("Guayaquil", "Manta", 30),
+            new Vuelo("Manta", "Loja", 50),
+            new Vuelo("Cuenca", "Loja", 70)
+        };
+
+        ConstruirGrafo(vuelos);
+
+        Console.WriteLine("Ingrese ciudad de origen:");
+        string origen = Console.ReadLine();
+
+        Console.WriteLine("Ingrese ciudad de destino:");
+        string destino = Console.ReadLine();
+
+        var resultado = Dijkstra(origen, destino);
+
+        if (resultado.Item2 == int.MaxValue)
+        {
+            Console.WriteLine("No hay ruta disponible.");
+        }
+        else
+        {
+            Console.WriteLine($"Ruta más barata de {origen} a {destino}: {string.Join(" -> ", resultado.Item1)} con un costo de ${resultado.Item2}");
+        }
+    }
+
+    static void ConstruirGrafo(List<Vuelo> vuelos)
+    {
+        foreach (var vuelo in vuelos)
+        {
+            if (!grafo.ContainsKey(vuelo.Origen))
+                grafo[vuelo.Origen] = new List<Tuple<string, int>>();
+
+            grafo[vuelo.Origen].Add(Tuple.Create(vuelo.Destino, vuelo.Costo));
+        }
+    }
+
+    static Tuple<List<string>, int> Dijkstra(string inicio, string fin)
+    {
+        var distancias = new Dictionary<string, int>();
+        var previo = new Dictionary<string, string>();
+        var nodos = new HashSet<string>();
+
+        foreach (var nodo in grafo.Keys)
+        {
+            distancias[nodo] = int.MaxValue;
+            nodos.Add(nodo);
+            foreach (var conexion in grafo[nodo])
+                nodos.Add(conexion.Item1);
+        }
+
+        foreach (var nodo in nodos)
+            if (!distancias.ContainsKey(nodo))
+                distancias[nodo] = int.MaxValue;
+
+        distancias[inicio] = 0;
+
+        while (nodos.Count > 0)
+        {
+            string nodoActual = null;
+            int menorDistancia = int.MaxValue;
+
+            foreach (var nodo in nodos)
+            {
+                if (distancias[nodo] <= menorDistancia)
+                {
+                    menorDistancia = distancias[nodo];
+                    nodoActual = nodo;
+                }
+            }
+
+            if (nodoActual == null)
+                break;
+
+            nodos.Remove(nodoActual);
+
+            if (!grafo.ContainsKey(nodoActual))
+                continue;
+
+            foreach (var conexion in grafo[nodoActual])
+            {
+                var vecino = conexion.Item1;
+                var costo = conexion.Item2;
+                int nuevoCosto = distancias[nodoActual] + costo;
+
+                if (nuevoCosto < distancias[vecino])
+                {
+                    distancias[vecino] = nuevoCosto;
+                    previo[vecino] = nodoActual;
+                }
+            }
+        }
+
+        var ruta = new List<string>();
+        string actual = fin;
+
+        while (previo.ContainsKey(actual))
+        {
+            ruta.Insert(0, actual);
+            actual = previo[actual];
+        }
+
+        if (actual == inicio)
+        {
+            ruta.Insert(0, inicio);
+            return Tuple.Create(ruta, distancias[fin]);
+        }
+
+        return Tuple.Create(new List<string>(), int.MaxValue);
+    }
+}
